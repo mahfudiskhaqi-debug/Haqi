@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mini Tools By Haqi</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: linear-gradient(270deg, #00c6ff, #0072ff);
+      background-size: 400% 400%;
+      animation: gradientMove 10s ease infinite;
+      color: white;
+    }
+
+    @keyframes gradientMove {
+      0% {
+        background-position: 0% 50%;
+      }
+
+      50% {
+        background-position: 100% 50%;
+      }
+
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+      z-index: 999;
+    }
+
+    .menu-toggle {
+      font-size: 1.5rem;
+      cursor: pointer;
+      background: white;
+      color: black;
+      border-radius: 5px;
+      padding: 5px 10px;
+    }
+
+    .nav-menu {
+      display: none;
+      position: absolute;
+      top: 60px;
+      left: 20px;
+      background: rgba(0, 0, 0, 0.8);
+      padding: 10px;
+      border-radius: 10px;
+    }
+
+    .nav-menu a {
+      display: block;
+      color: white;
+      margin: 5px 0;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+
+    .nav-menu a:hover {
+      color: #00ffea;
+    }
+
+    .section {
+      padding: 2rem;
+      min-height: 100vh;
+      display: none;
+    }
+
+    .active {
+      display: block;
+    }
+
+    footer {
+      background: black;
+      color: white;
+      text-align: center;
+      padding: 1rem;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      z-index: 999;
+    }
+
+    button,
+    input[type="button"] {
+      padding: 10px 20px;
+      border: none;
+      background: #fff;
+      color: #333;
+      border-radius: 10px;
+      margin: 5px;
+      font-weight: bold;
+      transition: transform 0.3s, background 0.3s;
+      cursor: pointer;
+    }
+
+    button:hover {
+      transform: scale(1.1);
+      background: #00ffcc;
+    }
+
+    input,
+    select {
+      padding: 10px;
+      border-radius: 5px;
+      margin: 5px 0;
+      border: none;
+    }
+
+    .title {
+      font-size: 1.8rem;
+      font-weight: bold;
+      margin-bottom: 1rem;
+      text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
+    }
+
+    .label {
+      font-size: 0.9rem;
+      color: #e0e0e0;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div class="menu-toggle" onclick="toggleMenu()">≡</div>
+    <div class="nav-menu" id="navMenu">
+      <a href="#umur">Cek Umur & Weton</a>
+      <a href="#kalkulator">Kalkulator</a>
+      <a href="#todo">To-Do List</a>
+      <a href="#timer">Timer</a>
+    </div>
+  </header>
+
+  <section id="umur" class="section active">
+    <div class="title">Cek Umur & Weton</div>
+    <label class="label">Masukkan Tanggal Lahir Anda:</label><br />
+    <input type="date" id="tgl1">
+    <button onclick="cekUmur()">Hitung Umur</button><br />
+    <div id="hasilUmur"></div>
+    <br /><br />
+    <label class="label">Masukkan Tanggal Lahir Pasangan (OPSIONAL):</label><br />
+    <input type="date" id="tgl2">
+    <button onclick="cekKecocokan()">Cek Kecocokan</button><br />
+    <div id="hasilWeton"></div>
+  </section>
+
+  <section id="kalkulator" class="section">
+    <div class="title">Kalkulator & Konversi Kurs</div>
+    <label class="label">Masukkan Angka:</label>
+    <input type="number" id="angka1" placeholder="Angka 1">
+    <input type="number" id="angka2" placeholder="Angka 2"><br />
+    <button onclick="hitung('+')">+</button>
+    <button onclick="hitung('-')">−</button>
+    <button onclick="hitung('*')">×</button>
+    <button onclick="hitung('/')">÷</button><br />
+    <div id="hasilKalkulator"></div>
+    <hr style="margin: 2rem 0;">
+    <div class="title">Kalkulator Kurs Mata Uang</div>
+    <label class="label">Masukkan Jumlah Uang:</label>
+    <input type="number" id="jumlahUang" placeholder="Jumlah">
+    <label class="label">Dari:</label>
+    <select id="dari">
+      <option value="IDR">IDR</option>
+      <option value="USD">USD</option>
+      <option value="EUR">EUR</option>
+      <option value="JPY">JPY</option>
+      <option value="SGD">SGD</option>
+    </select>
+    <label class="label">Ke:</label>
+    <select id="ke">
+      <option value="IDR">IDR</option>
+      <option value="USD">USD</option>
+      <option value="EUR">EUR</option>
+      <option value="JPY">JPY</option>
+      <option value="SGD">SGD</option>
+    </select>
+    <button onclick="konversiKurs()">Konversi</button><br />
+    <div id="hasilKurs"></div>
+  </section>
+
+  <section id="todo" class="section">
+    <div class="title">To-Do List dengan Alarm</div>
+    <input type="text" id="task" placeholder="Tugas">
+    <input type="time" id="taskTime">
+    <button onclick="tambahTugas()">Tambah</button>
+    <ul id="listTugas"></ul>
+  </section>
+
+  <section id="timer" class="section">
+    <div class="title">⏳ Setel Timer Mundur</div>
+    <label>Masukkan Menit:</label><br>
+    <input type="number" id="timerMinutes" placeholder="Contoh: 2"><br>
+    <button onclick="mulaiTimer()">Mulai</button>
+    <div id="countdown" style="margin-top: 10px; font-size: 1.2rem; font-weight: bold;"></div>
+  </section>
+
+  <footer>© 2025 By Haqi</footer>
+
+  <script>
+    function toggleMenu() {
+      const menu = document.getElementById("navMenu");
+      menu.style.display = menu.style.display === "block" ? "none" : "block";
+    }
+
+    function showSection(id) {
+      document.querySelectorAll(".section").forEach(sec => sec.classList.remove("active"));
+      document.getElementById(id).classList.add("active");
+      document.getElementById("navMenu").style.display = "none";
+    }
+
+    document.querySelectorAll('.nav-menu a').forEach(link => {
+      link.addEventListener("click", e => {
+        e.preventDefault();
+        const target = link.getAttribute("href").replace("#", "");
+        showSection(target);
+      });
+    });
+
+    function cekUmur() {
+      const tgl = new Date(document.getElementById("tgl1").value);
+      if (!tgl.getTime()) return alert("Isi tanggal dulu!");
+      const now = new Date();
+      let tahun = now.getFullYear() - tgl.getFullYear();
+      let bulan = now.getMonth() - tgl.getMonth();
+      let hari = now.getDate() - tgl.getDate();
+      if (hari < 0) {
+        bulan--;
+        hari += new Date(now.getFullYear(), now.getMonth(), 0).getDate();
+      }
+      if (bulan < 0) {
+        tahun--;
+        bulan += 12;
+      }
+      const weton = ["Legi", "Pahing", "Pon", "Wage", "Kliwon"];
+      const wetonIndex = Math.floor(tgl.getTime() / 86400000 + 3) % 5;
+      const hariNama = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+      const dayName = hariNama[tgl.getDay()];
+      function updateClock() {
+        const nowLive = new Date();
+        const jam = String(nowLive.getHours()).padStart(2, '0');
+        const menit = String(nowLive.getMinutes()).padStart(2, '0');
+        const detik = String(nowLive.getSeconds()).padStart(2, '0');
+        const hasil = `
+          Umur Anda: ${tahun} tahun, ${bulan} bulan, ${hari} hari<br>
+          Hari Lahir: ${dayName}<br>
+          Weton: ${weton[wetonIndex]}<br>
+          Sekarang: ${jam}:${menit}:${detik}`;
+        document.getElementById("hasilUmur").innerHTML = hasil;
+      }
+      updateClock();
+      setInterval(updateClock, 1000);
+    }
+
+    function cekKecocokan() {
+      const t1 = new Date(document.getElementById("tgl1").value);
+      const t2 = new Date(document.getElementById("tgl2").value);
+      const weton = ["Legi", "Pahing", "Pon", "Wage", "Kliwon"];
+      const w1 = weton[Math.floor(t1.getTime() / 86400000 + 3) % 5];
+      const w2 = weton[Math.floor(t2.getTime() / 86400000 + 3) % 5];
+      const hasilRandom = [
+        "❌ Lebih baik putus aja",
+        "😬 Usahain masih bisa",
+        "🙂 Lumayan cocok",
+        "💖 🥰Cocok Banget🥰 💖"
+      ];
+      const isPasanganSpesial = (t1.getDate() === 19 && t1.getMonth() === 11 && t1.getFullYear() === 2006 &&
+        t2.getDate() === 9 && t2.getMonth() === 1 && t2.getFullYear() === 2007) ||
+        (t2.getDate() === 19 && t2.getMonth() === 11 && t2.getFullYear() === 2006 &&
+          t1.getDate() === 9 && t1.getMonth() === 1 && t1.getFullYear() === 2007);
+      const cocok = isPasanganSpesial ? hasilRandom[3] : hasilRandom[Math.floor(Math.random() * hasilRandom.length)];
+      document.getElementById("hasilWeton").innerHTML = `
+        Weton Kamu: ${w1}<br/>
+        Weton Pasangan: ${w2}<br/>
+        <strong>${cocok}</strong>
+      `;
+    }
+
+    function hitung(op) {
+      const a = parseFloat(document.getElementById("angka1").value);
+      const b = parseFloat(document.getElementById("angka2").value);
+      let hasil = "";
+      if (isNaN(a) || isNaN(b)) {
+        hasil = "Masukkan angka dengan benar!";
+      } else {
+        switch (op) {
+          case '+': hasil = a + b; break;
+          case '-': hasil = a - b; break;
+          case '*': hasil = a * b; break;
+          case '/': hasil = b !== 0 ? a / b : "Tidak bisa bagi 0"; break;
+        }
+      }
+      document.getElementById("hasilKalkulator").innerText = "Hasil: " + hasil;
+    }
+
+    const kurs = {
+      "IDR": 16361,
+      "USD": 1,
+      "EUR": 0.8588,
+      "JPY": 147.28,
+      "SGD": 1.2852
+    };
+
+    function konversiKurs() {
+      const dari = document.getElementById("dari").value;
+      const ke = document.getElementById("ke").value;
+      const jumlah = parseFloat(document.getElementById("jumlahUang").value);
+      if (isNaN(jumlah)) return alert("Masukkan jumlah uang valid");
+      const hasil = (jumlah / kurs[dari]) * kurs[ke];
+      document.getElementById("hasilKurs").innerText = `Hasil: ${hasil.toFixed(2)} ${ke}`;
+    }
+
+    function tambahTugas() {
+      const tugas = document.getElementById("task").value;
+      const waktu = document.getElementById("taskTime").value;
+      if (!tugas || !waktu) return alert("Isi tugas dan waktu!");
+      const li = document.createElement("li");
+      li.innerText = tugas + " - Alarm: " + waktu;
+      document.getElementById("listTugas").appendChild(li);
+      setAlarm(waktu, tugas);
+    }
+
+    let alarmAudio;
+    function setAlarm(waktu, tugas) {
+      const now = new Date();
+      const [jam, menit] = waktu.split(":").map(Number);
+      const target = new Date();
+      target.setHours(jam, menit, 0, 0);
+      let selisih = target.getTime() - now.getTime();
+      if (selisih < 0) selisih += 86400000;
+      setTimeout(() => {
+        showAlarmPopup(tugas);
+        alarmAudio = new Audio("https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg");
+        alarmAudio.loop = true;
+        alarmAudio.play();
+        if (navigator.vibrate) navigator.vibrate([500, 200, 500]);
+      }, selisih);
+    }
+
+    function showAlarmPopup(tugas) {
+      const popup = document.createElement("div");
+      popup.innerHTML = `
+        <div style="position:fixed;top:30%;left:50%;transform:translate(-50%,-50%);
+                    background:white;padding:20px;border:2px solid black;z-index:9999;
+                    text-align:center;">
+          <h3>🔔 Alarm!</h3>
+          <p>Tugas: ${tugas}</p>
+          <button onclick="matikanAlarm(this.parentElement)">Matikan Alarm</button>
+        </div>
+      `;
+      document.body.appendChild(popup);
+    }
+
+    function matikanAlarm(popup) {
+      if (alarmAudio) {
+        alarmAudio.pause();
+        alarmAudio.currentTime = 0;
+      }
+      popup.remove();
+    }
+
+    let countdownInterval;
+    function mulaiTimer() {
+      clearInterval(countdownInterval);
+      const inputMenit = document.getElementById("timerMinutes").value;
+      let detik = parseInt(inputMenit) * 60;
+      if (isNaN(detik) || detik <= 0) {
+        document.getElementById("countdown").innerText = "❗ Masukkan menit yang valid.";
+        return;
+      }
+      updateTampilan(detik);
+      countdownInterval = setInterval(() => {
+        detik--;
+        if (detik <= 0) {
+          clearInterval(countdownInterval);
+          document.getElementById("countdown").innerText = "⏰ Waktu Habis!";
+          bunyiAlarm();
+        } else {
+          updateTampilan(detik);
+        }
+      }, 1000);
+    }
+
+    function updateTampilan(detik) {
+      const menit = Math.floor(detik / 60);
+      const sisaDetik = detik % 60;
+      document.getElementById("countdown").innerText = `⏳ ${menit}m ${sisaDetik < 10 ? '0' : ''}${sisaDetik}s`;
+    }
+
+    function bunyiAlarm() {
+      if (navigator.vibrate) navigator.vibrate([500, 200, 500]);
+      const audio = new Audio("https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg");
+      audio.play();
+    }
+  </script>
+</body>
+
+</html>
